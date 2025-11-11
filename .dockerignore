@@ -1,0 +1,71 @@
+# .dockerignore - Otimiza o build excluindo arquivos desnecessários
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.dist-info/
+
+# Ambientes virtuais
+venv/
+env/
+ENV/
+.venv/
+
+# Arquivos sensíveis (gerenciados via volumes/secrets)
+.env
+.env.local
+.env.*.local
+*.log
+
+# Dados de usuário (montados como volumes)
+input_data/
+output_data/
+temp/
+
+# Documentação
+README.md
+README_WEB.md
+*.md
+docs/
+
+# Docker (não precisam estar dentro da imagem)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Claude
+.claude/
+
+# Pytest e testes
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.backup

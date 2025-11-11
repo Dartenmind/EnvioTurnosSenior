@@ -680,8 +680,8 @@ if __name__ == '__main__':
     print("=" * 60)
     print("  SISTEMA DE ENVIO DE ESCALAS - INTERFACE WEB")
     print("=" * 60)
-    print("  Acesse: http://localhost:5000")
+    print("  Acesse: http://localhost:3000")
     print("=" * 60)
 
     # Iniciar servidor
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=3000, debug=True)

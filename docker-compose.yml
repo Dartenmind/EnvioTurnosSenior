@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  web:
+    # Nome do serviço
+    container_name: envio-turnos-senior
+
+    # Build da imagem a partir do Dockerfile local
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Porta exposta: HOST:CONTAINER
+    ports:
+      - "3000:3000"
+
+    # Variáveis de ambiente (carregadas do arquivo .env)
+    env_file:
+      - .env
+
+    # Variáveis de ambiente adicionais
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+
+    # Volumes persistentes para dados do usuário
+    volumes:
+      # Diretório de upload de CSVs
+      - ./input_data:/app/input_data
+
+      # Diretório de resultados processados
+      - ./output_data:/app/output_data
+
+      # Arquivo .env (somente leitura)
+      - ./.env:/app/.env:ro
+
+    # Política de restart
+    restart: unless-stopped
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:3000/', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Rede
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
