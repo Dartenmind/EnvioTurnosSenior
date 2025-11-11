@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Envio de Escalas - Senior</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="prompt">$</span> Sistema de Envio de Escalas Senior
+                </h1>
+                <div class="status-badge" id="statusBadge">
+                    <span class="status-dot"></span>
+                    <span id="statusText">Desconectado</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="card upload-section" id="uploadSection">
+                <h2 class="card-title">
+                    <span class="prompt">&gt;</span> Upload de Arquivo CSV
+                </h2>
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                    <div class="upload-icon">📁</div>
+                    <p class="upload-text">Arraste e solte o arquivo CSV aqui</p>
+                    <p class="upload-subtext">ou clique para selecionar</p>
+                    <button class="btn btn-primary" id="selectFileBtn">Selecionar Arquivo</button>
+                </div>
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="info-row">
+                        <span class="info-label">Arquivo:</span>
+                        <span id="fileName"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Registros:</span>
+                        <span id="fileRecords"></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="card settings-section" id="settingsSection" style="display: none;">
+                <h2 class="card-title">
+                    <span class="prompt">&gt;</span> Configurações
+                </h2>
+                <div class="settings-content">
+                    <div class="setting-item">
+                        <label for="concurrencyInput">Requisições Simultâneas:</label>
+                        <input type="number" id="concurrencyInput" min="1" max="50" value="5">
+                        <span class="setting-help">Entre 1 e 50 requisições simultâneas</span>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-success" id="startProcessBtn">
+                            <span class="btn-icon">▶</span> Iniciar Processamento
+                        </button>
+                        <button class="btn btn-secondary" id="cancelBtn">
+                            <span class="btn-icon">✕</span> Cancelar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Terminal Output -->
+            <section class="card terminal-section">
+                <h2 class="card-title">
+                    <span class="prompt">&gt;</span> Console de Saída
+                </h2>
+                <div class="terminal" id="terminal">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">system@escalas:~$</span>
+                        <span class="terminal-text">Sistema pronto. Aguardando ações...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="card progress-section" id="progressSection" style="display: none;">
+                <h2 class="card-title">
+                    <span class="prompt">&gt;</span> Progresso
+                </h2>
+                <div class="progress-content">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <span class="progress-text" id="progressText">0%</span>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="stat">
+                            <span class="stat-label">Processados:</span>
+                            <span class="stat-value" id="statProcessed">0</span>
+                        </div>
+                        <div class="stat stat-success">
+                            <span class="stat-label">Sucessos:</span>
+                            <span class="stat-value" id="statSuccess">0</span>
+                        </div>
+                        <div class="stat stat-error">
+                            <span class="stat-label">Erros:</span>
+                            <span class="stat-value" id="statErrors">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Total:</span>
+                            <span class="stat-value" id="statTotal">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="card results-section" id="resultsSection" style="display: none;">
+                <h2 class="card-title">
+                    <span class="prompt">&gt;</span> Resultados
+                </h2>
+                <div class="results-content">
+                    <div class="results-summary" id="resultsSummary"></div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="downloadBtn" style="display: none;">
+                            <span class="btn-icon">⬇</span> Download Resultados
+                        </button>
+                        <button class="btn btn-warning" id="retryBtn" style="display: none;">
+                            <span class="btn-icon">↻</span> Reenviar Erros
+                        </button>
+                        <button class="btn btn-secondary" id="newProcessBtn" style="display: none;">
+                            <span class="btn-icon">+</span> Novo Processamento
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Errors Table -->
+            <section class="card errors-section" id="errorsSection" style="display: none;">
+                <h2 class="card-title">
+                    <span class="prompt">&gt;</span> Detalhes dos Erros
+                </h2>
+                <div class="table-container">
+                    <table class="errors-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>ID Colaborador</th>
+                                <th>Nome</th>
+                                <th>Data</th>
+                                <th>Código Horário</th>
+                                <th>Erro</th>
+                            </tr>
+                        </thead>
+                        <tbody id="errorsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Sistema de Envio Automático de Escalas - Senior v7.0</p>
+            <p>Desenvolvido para integração com API Senior Gestão de Ponto</p>
+        </footer>
+    </div>
+
+    <!-- SocketIO and App Script -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

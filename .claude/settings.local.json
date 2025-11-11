@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Matheus/OneDrive/Cloud/WorkSpace/Swissport/SENIOR_V2/GET_TOKEN_SENIOR_/src/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
