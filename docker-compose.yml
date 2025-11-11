@@ -6,6 +6,7 @@ services:
     container_name: envio-turnos-senior
 
     # Build da imagem a partir do Dockerfile local
+    # Usa Gunicorn + eventlet para produção (ver CMD no Dockerfile)
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,12 +16,12 @@ services:
       - "3000:3000"
 
     # Variáveis de ambiente (carregadas do arquivo .env)
+    # Deve conter: SENIOR_USERNAME e SENIOR_PASSWORD
     env_file:
       - .env
 
     # Variáveis de ambiente adicionais
     environment:
-      - FLASK_ENV=production
       - PYTHONUNBUFFERED=1
 
     # Volumes persistentes para dados do usuário

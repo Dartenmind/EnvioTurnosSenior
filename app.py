@@ -679,9 +679,16 @@ if __name__ == '__main__':
 
     print("=" * 60)
     print("  SISTEMA DE ENVIO DE ESCALAS - INTERFACE WEB")
+    print("  MODO DESENVOLVIMENTO")
     print("=" * 60)
     print("  Acesse: http://localhost:3000")
     print("=" * 60)
+    print()
+    print("  Para produção, use:")
+    print("  gunicorn --worker-class eventlet -w 1 app:app --bind 0.0.0.0:3000")
+    print("=" * 60)
 
-    # Iniciar servidor
-    socketio.run(app, host='0.0.0.0', port=3000, debug=True)
+    # Iniciar servidor de desenvolvimento
+    # ATENÇÃO: Apenas para desenvolvimento local
+    # Em produção, use Gunicorn (ver comando acima)
+    socketio.run(app, host='0.0.0.0', port=3000, debug=True, allow_unsafe_werkzeug=True)

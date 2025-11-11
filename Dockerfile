@@ -65,5 +65,11 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:3000/', timeout=5)" || exit 1
 
-# Comando para iniciar a aplicação
-CMD ["python", "app.py"]
+# Comando para iniciar a aplicação em produção com Gunicorn
+# --worker-class eventlet: Suporte a WebSocket/Socket.IO
+# -w 1: 1 worker (eventlet é single-threaded mas async)
+# --bind 0.0.0.0:3000: Escuta em todas as interfaces na porta 3000
+# --log-level info: Logging adequado para produção
+# --access-logfile -: Logs de acesso no stdout (Docker-friendly)
+# --error-logfile -: Logs de erro no stdout (Docker-friendly)
+CMD ["gunicorn", "--worker-class", "eventlet", "-w", "1", "--bind", "0.0.0.0:3000", "--log-level", "info", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
